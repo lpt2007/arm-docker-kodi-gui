@@ -1,5 +1,9 @@
 FROM resin/rpi-raspbian:buster
-MAINTAINER kevinosorus <kevin.caradant@gmail.com>
+
+# Enable building ARM container on x86 machinery on the web (comment out next line if built on Raspberry)
+RUN [ "cross-build-start" ]
+
+MAINTAINER lpt2007 <mohyat@gmail.com>
 RUN apt-get clean && apt-get update && apt-get install -y --no-install-recommends xserver-xorg xinit \
      fbset libraspberrypi0 alsa-base alsa-utils alsa-tools kodi xserver-xorg-legacy dbus-x11 \
      && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -12,3 +16,6 @@ usermod -a -G plugdev root && \
 usermod -a -G tty root
 
 CMD ["bash", "/usr/bin/kodi"]
+
+# stop processing ARM emulation (comment out next line if built on Raspberry)
+RUN [ "cross-build-end" ]
